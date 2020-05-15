@@ -9,7 +9,7 @@ def start():
     query = str(input('with just yes or no: '))
     if query == 'no':
         print('We have 02 methods tf-idf and CountVectorizer')
-        query_2 = str(input('with just 0 = tf-idf  and  1 = CountVectorizer and  2 = Vader_SentimentIntensityAnalyzer: '))
+        query_2 = int(input('with just 0 = tf-idf  and  1 = CountVectorizer and  2 = Vader_SentimentIntensityAnalyzer: '))
         if query_2 == 0:
             print("sentiment with: ", sentiment_analyse_with_TFIDF())
         elif query_2 == 1:
