@@ -96,7 +96,7 @@ def new_labeled_dataset(string_dataset):
     print(data_new)
 
 string_dataset =  'labeledTrainData.tsv' #'train.tsv'
-new_labeled_dataset(string_dataset)
+#new_labeled_dataset(string_dataset)
 
 
 
