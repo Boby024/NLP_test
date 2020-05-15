@@ -1,3 +1,4 @@
+import string
 import pandas as pd
 import numpy as np
 
@@ -27,17 +28,23 @@ global abbreviation
 global signification
 
 def replace_slang(_str): # here I get the abbreviation
-    abbreviation = data['abbreviation'].values
-    signification = data['signification'].values
-
-    result = np.where(abbreviation == _str.lower())
-    _result = result[0]
-    if len(_result) > 0:
-        return signification[_result[0]].lower()
-    else:
+    if len(_str) < 2:
         return _str.lower()
+    else:
+        abbreviation = data['abbreviation'].values
+        signification = data['signification'].values
 
+        result = np.where(abbreviation == _str.lower())
+        _result = result[0]
+        if len(_result) > 0:
+            translator = str.maketrans('', '', string.punctuation)
+            text = signification[_result[0]].lower().translate(translator)
+            return text
+        else:
+            return _str.lower()
 
+txt = 'nfw'
+#print(replace_slang(txt))
 """
 df = pd.read_csv('slang_words.txt', sep="=", header=None, names=["abbreviation", "signification"])
     # df.to_csv('slang_final.csv')

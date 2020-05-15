@@ -30,44 +30,45 @@ def lemmatization(array_word):
             final_array_words.append(lem.lemmatize(word,wntag))
     return final_array_words
 
+# Remove hashtag, link, @username, non alphabetic
+def hashtag_username_url(text):
+    text = re.sub('@[\w\-]+','<hashtag>', text)
+    text = re.sub('#[\w\-]+', '<username>', text)
+    parsed_text = re.sub('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', '<link>', text)
+    #parsed_text = re.sub(r'\d+', '', text)
+    return parsed_text
 
 def data_pre_processing_text(text):
+    # Only when the text is from Twitter
+    #text = hashtag_username_url(text)
+
+    # The performance of this code to remove punctuation
+    # is better than using regex
     translator = str.maketrans('', '', string.punctuation)
     text = text.translate(translator)
 
-    # replace slang, we have to extend this list
-    # before eleminate number, text can containt some slang with number,
-    #that's why replacing slang words firstly
-    rs = text.split(' ')
-    for i in range(len(rs)):
-        if rs[1] != ' ':
-            rs[i] = replace_slang(rs[i])
-    text = ' '.join(rs)
-    text = re.sub(r'\d+', '', text)
+    tokenized_word = word_tokenize(text)
+    filtered_words = []
+    for i in range(len(tokenized_word)):
+        __str_text = tokenized_word[i]
+        __str_text = replace_slang(tokenized_word[i]) # could be a string with length 1, 2 ,3 4 # replace slang, we have to extend this list before eleminate number, text can containt some slang with number that's why replacing slang words firstly
+        if len(__str_text) > 1:
+            for word in word_tokenize(__str_text):
+                if word not in stop_words:
+                    filtered_words.append(word.lower())
+        else:
+            if __str_text not in stop_words:  # and word not in list_punctuation:
+                filtered_words.append(tokenized_word[i].lower())
 
-    tokenized_text = sent_tokenize(text)
+    filtered_words = lemmatization(filtered_words)
 
-    tokenized_word_by_sent = []
-    for phrase in tokenized_text:
-        tokenized_word = word_tokenize(phrase)
-        tokenized_word_by_sent.append(tokenized_word)
+    # Only for this Review dataset
+    if 'amp' in filtered_words:
+        filtered_words.remove('amp')
 
-    list_punctuation = ['.', '?', ',', '!', '"', ':', ';', "'", '-', '/', '...', '(', ')']
-    punctuation = '!”#$%&’()*+,-./:;<=>?@[\]^_`{|}~'
-
-    filtered_sent = []
-    for sent in tokenized_word_by_sent:
-        for word in sent:
-            if word not in stop_words: # and word not in list_punctuation:
-                filtered_sent.append(word.lower())
-
-    new_filtered_sent = lemmatization(filtered_sent)
-
-    if 'amp' in new_filtered_sent:
-        new_filtered_sent.remove('amp')
-
-    if len(new_filtered_sent) > 0:
-        return ' '.join(new_filtered_sent)
+    if len(filtered_words) > 0:
+        parsed_text =  ' '.join(filtered_words)
+        return re.sub(r'\d+', '', parsed_text)
     else:
         return None
 
@@ -95,7 +96,7 @@ def new_labeled_dataset(string_dataset):
     print(data_new)
 
 string_dataset =  'labeledTrainData.tsv' #'train.tsv'
-#new_labeled_dataset(string_dataset)
+new_labeled_dataset(string_dataset)
 
 
 
@@ -122,13 +123,11 @@ H = """cause I'm tired of you big bitches coming for us skinny girls!!&#8221;"""
 G = """you might not get ya bitch back &amp; thats that"""
 I = """hobbies include: fighting Mariam"""
 input_str = """This &is [an] example? {of} string. with.? punctuation!!!!"""
-J = """ null"""
-
-#print(data_pre_processing_text(A))
+J = """ null wtH a3"""
 
 liste_tweets = [tweet_one,A,B,C,D,E,F,G,H,G,I,input_str,J]
 #for tweet in liste_tweets:
- #   print( data_pre_processing_text(tweet) )
+    #print( data_pre_processing_text(tweet) )
 
 #print(list(data['Phrase']))
 #print(list(data['Sentiment']))

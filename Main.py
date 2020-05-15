@@ -5,7 +5,7 @@ from Text_Processing import new_labeled_dataset
 
 def start():
     # Here test our sentminent analysis programm
-    print("DO you want to classify again the dataset... and this can take 30 minutes for our 25000 row ")
+    print("DO you want to classify again the dataset... and this will take about 20 minutes for our 25.000 row ")
     query = str(input('with just yes or no: '))
     if query == 'no':
         print('We have 02 methods tf-idf and CountVectorizer')
