@@ -42,7 +42,7 @@ def accuracy_score_TfidfVectorizer():
     joblib.dump(nb,'NB_tfidf.pkl')
 #accuracy_score_TfidfVectorizer()
 
-nb = MultinomialNB()
-nb_review_tfidf = open('NB_tfidf.pkl', 'rb')
-g = joblib.load(nb_review_tfidf)
-print(g)
+#nb = MultinomialNB()
+#nb_review_tfidf = open('NB_tfidf.pkl', 'rb')
+#g = joblib.load(nb_review_tfidf)
+#print(g)
