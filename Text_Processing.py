@@ -54,7 +54,7 @@ def data_pre_processing_text(text):
         __str_text = replace_slang(tokenized_word[i]) # could be a string with length 1, 2 ,3 4 # replace slang, we have to extend this list before eleminate number, text can containt some slang with number that's why replacing slang words firstly
         if len(__str_text) > 1:
             for word in word_tokenize(__str_text):
-                if word not in stop_words:
+                if word not in stop_words: # remenber to don't remove 'not' word by this step
                     filtered_words.append(word.lower())
         else:
             if __str_text not in stop_words:  # and word not in list_punctuation:

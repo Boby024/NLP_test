@@ -18,4 +18,5 @@ def sentiment_analyse_with_SentimentIntensityAnalyzer():
     elif pos - neg == 0:
         return {'sentiment': 'neutral', 'score': neu}
 
-#print(sentiment_analyse_with_SentimentIntensityAnalyzer())
+text = ' '.join(['drasko', 'steve', 'need', 'hate', 'fuck', 'get', 'mkr'])
+print(sia.polarity_scores(text))
